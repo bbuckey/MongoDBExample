@@ -5,6 +5,7 @@ import java.util.List;
 import com.mongodb.DBObject;
 import org.mongo.entity.TestDataEnitity;
 import org.bson.types.ObjectId;
+import com.mongodb.BasicDBObject;
 
 
 public class TestDataManager {
@@ -42,5 +43,13 @@ public class TestDataManager {
 		}
 		return collList;
 	}
+	
+	public void addTestDataToCollection(TestDataEnitity tde)throws Exception{
+		DBObject obj = new BasicDBObject();
+		obj.put("h", tde.getH());
+		obj.put("x", tde.getX());
+		this.testDao.addDBObjectToCollection(obj);
+	}
+	
 	
 }
