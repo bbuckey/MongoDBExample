@@ -4,6 +4,8 @@ import org.mongo.dao.TestDao;
 import java.util.List;
 import com.mongodb.DBObject;
 import org.mongo.entity.TestDataEnitity;
+import org.bson.types.ObjectId;
+
 
 public class TestDataManager {
  
@@ -11,7 +13,7 @@ public class TestDataManager {
 	TestDataManager(){
 		;
 	}
-	TestDataManager(TestDao _testDao){
+	public TestDataManager(TestDao _testDao){
 		testDao = _testDao;
 	}
 	
@@ -21,10 +23,22 @@ public class TestDataManager {
 		List<DBObject> l = this.testDao.getTestDataCollecton();
 		for(DBObject j : l){
 				TestDataEnitity tde = new TestDataEnitity();
-				tde.setId((String)j.get("_id"));
-				tde.setX((Integer)j.get("x"));
-				tde.setH((String)j.get("h"));
-				collList.add(tde);
+			for(String s : j.keySet()){
+				if(s.equalsIgnoreCase("_id")){
+					tde.setId((ObjectId)j.get(s));
+				}
+				if(s.equalsIgnoreCase("name")){
+					tde.setH((String)j.get(s));
+				}
+				if(s.equalsIgnoreCase("h")){
+					tde.setH((String)j.get(s));
+				}
+				if(s.equalsIgnoreCase("x")){
+					tde.setX((Double)j.get(s));
+				}
+			}
+			collList.add(tde);
+			
 		}
 		return collList;
 	}

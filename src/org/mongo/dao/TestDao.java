@@ -16,7 +16,7 @@ public class TestDao extends MongoDataBase {
 
 	DBCollection dbc;
 	
-	TestDao(Properties props) throws UnknownHostException{super(props); dbc = super.getDBCollection(CollectionNames.TESTDATA);}
+	public TestDao(Properties props) throws UnknownHostException{super(props); dbc = super.getDBCollection(CollectionNames.TESTDATA);}
 	
 	public List getTestDataCollecton(){
 		List l = new ArrayList();

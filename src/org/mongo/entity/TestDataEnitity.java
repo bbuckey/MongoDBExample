@@ -1,20 +1,22 @@
 package org.mongo.entity;
 
+import org.bson.types.ObjectId;
+
 public class TestDataEnitity {
 
-		String id;
-		int x;
+	ObjectId id;
+		double x;
 		String h;
 		
 		public TestDataEnitity(){;}
 		
-		public TestDataEnitity(String _id, int _x, String _h){
+		public TestDataEnitity(ObjectId _id, double _x, String _h){
 			id = _id;
 			x = _x;
 			h = _h;
 		}
 		
-	public String getId(){
+	public ObjectId getId(){
 		return id;
 	}
 	
@@ -22,12 +24,12 @@ public class TestDataEnitity {
 		return h;
 	}
 	
-	public int getX(){
+	public double getX(){
 		return x;
 	}
 
 	
-	public void setId(String _id){
+	public void setId(ObjectId _id){
 		 id= _id;
 	}
 	
@@ -35,7 +37,7 @@ public class TestDataEnitity {
 		h = _h;
 	}
 	
-	public void setX(int _x){
+	public void setX(double _x){
 		 x = _x;
 	}
 	

@@ -32,10 +32,12 @@ public class MongoDataSource {
 		mo.setAutoConnectRetry(false);
 		mo.setConnectionsPerHost(1);
 		mo.setConnectTimeout(100000);
-		dbAddress = new DBAddress(DBAddress.defaultHost()+ String.valueOf(DBAddress.defaultPort()) + "/test");
-		mongo = new Mongo(sa,mo);
-		dbConnector = new DBTCPConnector(mongo,sa);
-		db = mongo.getDB("test");
+		dbAddress = new DBAddress(DBAddress.defaultHost() + ":"+ String.valueOf(DBAddress.defaultPort()) + "/test");
+		//mongo = new Mongo(sa,mo);
+		//dbConnector = mongo.getConnector(); //new DBTCPConnector(mongo,sa);
+		db = Mongo.connect(dbAddress);///mongo.getDB("test");
+		mongo = db.getMongo();
+		dbConnector = mongo.getConnector();
 	}
 	
 	public void setDBConnecter(DBConnector _dbConnector){
