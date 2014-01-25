@@ -15,7 +15,7 @@ import java.net.UnknownHostException;
 
 import javax.net.SocketFactory;
 
-public class MongoDataSource {
+public final class MongoDataSource {
 
 	Mongo mongo;
 	DBAddress dbAddress;
