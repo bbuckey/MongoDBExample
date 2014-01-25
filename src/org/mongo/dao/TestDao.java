@@ -20,11 +20,11 @@ public class TestDao extends MongoDataBase implements IBaseDao{
 
 	DBCollection dbc;
 
-	public TestDao(Properties props) throws UnknownHostException {
-		super(props);
+	public TestDao(MongoDataSource mds) {
+		super(mds);
 		dbc = super.getDBCollection(CollectionNames.TESTDATA);
 	}
-
+	
 	@Override
 	public DBObject findOneObjectFromKeyValue(String key, Object value){
 		DBObject dbo = new BasicDBObject();

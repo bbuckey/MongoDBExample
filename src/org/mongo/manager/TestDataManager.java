@@ -1,25 +1,36 @@
 package org.mongo.manager;
 
 import org.mongo.dao.TestDao;
+
+import java.lang.reflect.Method;
 import java.util.List;
 import com.mongodb.DBObject;
 import org.mongo.entity.TestDataEnitity;
 import org.bson.types.ObjectId;
 import com.mongodb.BasicDBObject;
+import org.mongo.util.StringUtils;
 
 
-public class TestDataManager {
+public class TestDataManager implements ITestDataManager{
  
 	TestDao testDao;	
-	TestDataManager(){
-		;
-	}
+	
+	public TestDataManager(){;}
+	
 	public TestDataManager(TestDao _testDao){
 		testDao = _testDao;
 	}
 	
+	public TestDao getTestDao(){
+		return this.testDao;
+	}
 	
-	public List getTestData(String CollectionName){
+	public void setTestDao(TestDao _testDao){
+		this.testDao = _testDao;
+	}
+	
+	@Override
+	public List getCollectionDocumentsAsList(){
 		List collList = new java.util.ArrayList();
 		List<DBObject> l = this.testDao.getCollectionAsList();
 		for(DBObject j : l){
@@ -44,25 +55,34 @@ public class TestDataManager {
 		return collList;
 	}
 	
-	public void addTestDataToCollection(TestDataEnitity tde)throws Exception{
+	@Override
+	public void addDocumentToCollection(TestDataEnitity tde)throws Exception{
 		DBObject obj = new BasicDBObject();
 		obj.put("h", tde.getH());
 		obj.put("x", tde.getX());
 		this.testDao.addDBObjectToCollection(obj);
 	}
 	
-	
-	public TestDataEnitity findOneTestDataDocumentByKeyValue(String key, Object value){
+	@SuppressWarnings("unchecked")
+	@Override
+	public TestDataEnitity findOneDocumentByKeyValue(String key, Object value){
 		DBObject obj = this.testDao.findOneObjectFromKeyValue("x", 100);
 		TestDataEnitity tde = new TestDataEnitity();
 		tde.setId((ObjectId)obj.get("_id"));
 		tde.setX((Double)obj.get("x"));
 		tde.setH((String)obj.get("h"));
-		//for(String s : obj.keySet()){
-			//ClassLoader cl = getClass().getClassLoader();
+		for(String s : obj.keySet()){
+			Class cl = TestDataEnitity.class.getClass();
+			try{
+			Method m = cl.getMethod("set"+StringUtils.makeFirstLetterUpperCase(s),null);
+			tde = (TestDataEnitity)m.invoke(tde,obj.get(s));
+			}catch(Throwable t){
+				t.printStackTrace();
+			}
 			
-		//}
+		}
 		return tde;
 	}
+
 	
 }

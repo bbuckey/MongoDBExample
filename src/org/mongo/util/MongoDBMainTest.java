@@ -22,8 +22,10 @@ public class MongoDBMainTest {
 		props.setProperty("connectTimeout", String.valueOf(100000));
 		TestDao testDao;
 		TestDataManager tdm;
+		MongoDataSource dba;
 		try{
-			testDao = new TestDao(props);
+			dba = new MongoDataSource(new DBAddress(DBAddress.defaultHost() + ":" + String.valueOf(DBAddress.defaultPort()) + "/test"));
+			testDao = new TestDao(dba);
 			tdm = new TestDataManager(testDao);
 			TestDataEnitity tde = tdm.findOneTestDataDocumentByKeyValue("x", 100);
 			/*List<TestDataEnitity> l = tdm.getTestData("");

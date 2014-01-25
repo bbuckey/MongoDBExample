@@ -4,6 +4,8 @@ import java.net.UnknownHostException;
 import java.util.Properties;
 import com.mongodb.Mongo;
 import org.mongo.dao.MongoDataSource;
+
+import com.mongodb.DBAddress;
 import com.mongodb.QueryOperators;
 import com.mongodb.DBObject;
 import com.mongodb.DBCollection;
@@ -16,46 +18,55 @@ import com.mongodb.DefaultDBEncoder;
 import org.bson.BasicBSONEncoder;
 
 public abstract class MongoDataBase {
-	private MongoDataSource mds;
+	private MongoDataSource mongoDataSource;
 	
-	public MongoDataBase(){;}
+	protected MongoDataBase(){;}
 	
-	public MongoDataBase(Properties props) throws UnknownHostException{
-		mds = new MongoDataSource(props);
-		if(!mds.getDBConnecter().isOpen()){
-			mds.setDB(Mongo.connect(mds.getDBAddress()));
-			mds.setDBConnecter(mds.getDB().getMongo().getConnector());
-		}
+	public MongoDataBase(DBAddress _dbAddress) throws UnknownHostException{
+		mongoDataSource = new MongoDataSource(_dbAddress);
 	}
 	
-	protected MongoDataSource getMongoDataSource(){
-		return mds;
+	public MongoDataBase(Mongo _mongo,String dbName) throws UnknownHostException{
+		mongoDataSource = new MongoDataSource(_mongo,dbName);
+	}
+	
+	
+	public MongoDataBase(MongoDataSource _mds){
+		mongoDataSource = _mds;
+	}
+	
+	protected void setMangoDataSource(MongoDataSource _mds){
+		this.mongoDataSource = _mds;
+	}
+	
+	public MongoDataSource getMongoDataSource(){
+		return mongoDataSource;
 	}
 	
 	protected DBCollection getDBCollectionOrCreateNewCollection(String collectionName){
 		DBCollection dbc;
-		dbc = mds.getDB().getCollection(collectionName);
+		dbc = mongoDataSource.getDB().getCollection(collectionName);
 		return dbc;
 	}
 	
 	protected DBCollection getDBCollection(String collectionName){
 		DBCollection dbc;
-		dbc = mds.getDB().getCollectionFromString(collectionName);
+		dbc = mongoDataSource.getDB().getCollectionFromString(collectionName);
 		return dbc;
 	}
 	
 	protected DBCollection getDBCollection(CollectionNames collectionName){
 		DBCollection dbc;
-		dbc = mds.getDB().getCollectionFromString(collectionName.getCamelCase());
+		dbc = mongoDataSource.getDB().getCollectionFromString(collectionName.getCamelCase());
 		return dbc;
 	}
 	
 	protected DBCollection getDBCollectionFromDataBaseAndCollectionName(String dbname, String collectionName){
-		return mds.getDBCollectionWithDataBaseAndCollectionName(dbname, collectionName);
+		return mongoDataSource.getDBCollectionWithDataBaseAndCollectionName(dbname, collectionName);
 	}
 	
 	protected DBCollection getDBCollectionFromDataBaseAndCollectionName(String dbname, CollectionNames collectionName){
-		return mds.getDBCollectionWithDataBaseAndCollectionName(dbname, collectionName);
+		return mongoDataSource.getDBCollectionWithDataBaseAndCollectionName(dbname, collectionName);
 	}
 
 }
