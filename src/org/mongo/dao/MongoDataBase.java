@@ -32,29 +32,29 @@ public abstract class MongoDataBase {
 		return mds;
 	}
 	
-	public DBCollection getDBCollectionOrCreateNewCollection(String collectionName){
+	protected DBCollection getDBCollectionOrCreateNewCollection(String collectionName){
 		DBCollection dbc;
 		dbc = mds.getDB().getCollection(collectionName);
 		return dbc;
 	}
 	
-	public DBCollection getDBCollection(String collectionName){
+	protected DBCollection getDBCollection(String collectionName){
 		DBCollection dbc;
 		dbc = mds.getDB().getCollectionFromString(collectionName);
 		return dbc;
 	}
 	
-	public DBCollection getDBCollection(CollectionNames collectionName){
+	protected DBCollection getDBCollection(CollectionNames collectionName){
 		DBCollection dbc;
 		dbc = mds.getDB().getCollectionFromString(collectionName.getCamelCase());
 		return dbc;
 	}
 	
-	public DBCollection getDBCollectionFromDataBaseAndCollectionName(String dbname, String collectionName){
+	protected DBCollection getDBCollectionFromDataBaseAndCollectionName(String dbname, String collectionName){
 		return mds.getDBCollectionWithDataBaseAndCollectionName(dbname, collectionName);
 	}
 	
-	public DBCollection getDBCollectionFromDataBaseAndCollectionName(String dbname, CollectionNames collectionName){
+	protected DBCollection getDBCollectionFromDataBaseAndCollectionName(String dbname, CollectionNames collectionName){
 		return mds.getDBCollectionWithDataBaseAndCollectionName(dbname, collectionName);
 	}
 

@@ -21,7 +21,7 @@ public class TestDataManager {
 	
 	public List getTestData(String CollectionName){
 		List collList = new java.util.ArrayList();
-		List<DBObject> l = this.testDao.getTestDataCollecton();
+		List<DBObject> l = this.testDao.getCollectionAsList();
 		for(DBObject j : l){
 				TestDataEnitity tde = new TestDataEnitity();
 			for(String s : j.keySet()){
@@ -51,5 +51,18 @@ public class TestDataManager {
 		this.testDao.addDBObjectToCollection(obj);
 	}
 	
+	
+	public TestDataEnitity findOneTestDataDocumentByKeyValue(String key, Object value){
+		DBObject obj = this.testDao.findOneObjectFromKeyValue("x", 100);
+		TestDataEnitity tde = new TestDataEnitity();
+		tde.setId((ObjectId)obj.get("_id"));
+		tde.setX((Double)obj.get("x"));
+		tde.setH((String)obj.get("h"));
+		//for(String s : obj.keySet()){
+			//ClassLoader cl = getClass().getClassLoader();
+			
+		//}
+		return tde;
+	}
 	
 }

@@ -3,6 +3,7 @@ package org.mongo.dao;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.mongo.atomic.CollectionNames;
@@ -15,7 +16,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.WriteResult;
 import com.mongodb.MongoException;
 
-public class TestDao extends MongoDataBase {
+public class TestDao extends MongoDataBase implements IBaseDao{
 
 	DBCollection dbc;
 
@@ -24,16 +25,14 @@ public class TestDao extends MongoDataBase {
 		dbc = super.getDBCollection(CollectionNames.TESTDATA);
 	}
 
-	public List getTestDataCollecton() {
-		List l = new ArrayList();
-		DBCursor cursor = dbc.find();
-		/*
-		 * DBObject dbo; while (cursor.hasNext()){ dbo = cursor.next();
-		 * l.add(dbo); }
-		 */
-		return cursor.toArray();
+	@Override
+	public DBObject findOneObjectFromKeyValue(String key, Object value){
+		DBObject dbo = new BasicDBObject();
+		dbo.put(key, value);
+		return this.dbc.findOne(dbo);
 	}
-
+	
+	@Override
 	public void addDBObjectToCollection(DBObject dbo) throws Exception {
 		WriteResult wr = this.dbc.save(dbo);
 		// this.dbc.insert(dbo);
@@ -45,7 +44,8 @@ public class TestDao extends MongoDataBase {
 
 	}
 
-	public void removeTestDataDocumentFromCollection(String key, Object value)
+	@Override
+	public void removeDBObjectFromCollection(String key, Object value)
 			throws Exception {
 		DBObject dbo = this.dbc.findOne((new BasicDBObject()).put(key, value));
 		if (dbo != null && dbo.containsField(key) && dbo.get(key).equals(value)) {
@@ -56,12 +56,39 @@ public class TestDao extends MongoDataBase {
 
 	}
 
+	@Override
 	public void removeDBObjectFromCollection(DBObject dbo) throws Exception {
 		WriteResult wr = this.dbc.remove(dbo);
 		if (wr.getError() != null && !wr.getError().equals("")) {
 			throw new MongoException("Error while removing a document"
 					+ wr.getError());
 		}
+	}
+
+	@Override
+	public DBObject findOneObjectFromDBObject(DBObject obj) {
+		
+		return this.dbc.findOne(obj);
+	}
+
+	@Override
+	public List<DBObject> findObjectsFromKeyValueMap(Map m) {
+		DBObject dbo = new BasicDBObject();
+		dbo.putAll(m);
+		DBCursor cursor = this.dbc.find(dbo);
+		return cursor!= null ? cursor.toArray() : null;
+	}
+
+	@Override
+	public List<DBObject> findObjectsFromDBOjects(DBObject obj) {
+		DBCursor cursor = this.dbc.find(obj);
+		return cursor!= null ? cursor.toArray() : null;
+	}
+
+	@Override
+	public List<DBObject> getCollectionAsList() {
+		DBCursor cursor = dbc.find();
+		return cursor!= null ? cursor.toArray() : null;
 	}
 
 }

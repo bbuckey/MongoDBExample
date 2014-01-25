@@ -25,14 +25,17 @@ public class MongoDBMainTest {
 		try{
 			testDao = new TestDao(props);
 			tdm = new TestDataManager(testDao);
-			List<TestDataEnitity> l = tdm.getTestData("");
+			TestDataEnitity tde = tdm.findOneTestDataDocumentByKeyValue("x", 100);
+			/*List<TestDataEnitity> l = tdm.getTestData("");
 			System.err.println(l.size());
 			for(TestDataEnitity tde : l){
 				System.err.println(tde.getId().toStringMongod());
 				System.err.println(tde.getH());
 				System.err.println(tde.getX());
-			}
-			
+			}*/
+			System.err.println(tde.getId().toStringMongod());
+			System.err.println(tde.getH());
+			System.err.println(tde.getX());
 		}
 		catch(Throwable t){
 			t.printStackTrace();
