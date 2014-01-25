@@ -75,7 +75,7 @@ public class TestDataManager implements ITestDataManager{
 			Class cl = TestDataEnitity.class.getClass();
 			try{
 			Method m = cl.getMethod("set"+StringUtils.makeFirstLetterUpperCase(s),null);
-			tde = (TestDataEnitity)m.invoke(tde,obj.get(s));
+			m.invoke(tde,obj.get(s));
 			}catch(Throwable t){
 				t.printStackTrace();
 			}
