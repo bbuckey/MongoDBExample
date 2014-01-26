@@ -1,12 +1,7 @@
 package org.mongo.dao;
 
-import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-
-import org.mongo.atomic.CollectionNames;
 import org.mongo.dao.MongoDataBase;
 
 import com.mongodb.DBCollection;
@@ -17,6 +12,7 @@ import com.mongodb.WriteResult;
 import com.mongodb.MongoException;
 import org.mongo.annotation.Collection;
 import org.mongo.annotation.CollectionName;
+import org.mongo.util.AnnotationUtils;
 
 @Collection
 @CollectionName(collectionName = "testData")
@@ -24,9 +20,18 @@ public class TestDao extends MongoDataBase implements IBaseDao{
 
 	DBCollection dbc;
 
+	TestDao(){;}
+	
 	public TestDao(MongoDataSource mds) {
 		super(mds);
-		dbc = super.getDBCollection(CollectionNames.TESTDATA);
+		dbc = super.getDBCollection(AnnotationUtils.getAnnotationValueForClass(TestDao.class, "collectionName"));
+	}
+	
+	public DBCollection getDatabaseCollection(){
+		if(dbc == null){
+			dbc = super.getDBCollection(AnnotationUtils.getAnnotationValueForClass(TestDao.class, "collectionName"));
+		}
+		return this.dbc;
 	}
 	
 	@Override
@@ -71,7 +76,6 @@ public class TestDao extends MongoDataBase implements IBaseDao{
 
 	@Override
 	public DBObject findOneObjectFromDBObject(DBObject obj) {
-		
 		return this.dbc.findOne(obj);
 	}
 
@@ -93,6 +97,15 @@ public class TestDao extends MongoDataBase implements IBaseDao{
 	public List<DBObject> getCollectionAsList() {
 		DBCursor cursor = dbc.find();
 		return cursor!= null ? cursor.toArray() : null;
+	}
+
+	@Override
+	public void updateDocumentWithDBObject(DBObject query, DBObject updateObject) {
+		WriteResult wr = dbc.update(query, updateObject);
+				if (wr.getError() != null && !wr.getError().equals("")) {
+					throw new MongoException("Error while updating a document"
+							+ wr.getError());
+				}
 	}
 
 }

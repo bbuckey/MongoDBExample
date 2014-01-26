@@ -7,7 +7,8 @@ import org.mongo.entity.*;
 import org.mongo.manager.*;
 import java.util.List;
 import org.mongo.dao.*;
-import org.mongo.util.StringUtils;
+import java.lang.annotation.Annotation;
+import org.mongo.util.AnnotationUtils;;
 
 public class MongoDBMainTest {
 
@@ -31,8 +32,13 @@ public class MongoDBMainTest {
 			testDao = new TestDao(dba);
 			tdm = new TestDataManager(testDao);
 			tde = new TestDataEnitity();
-			System.err.println(StringUtils.getAnnotationValueForFieldofClass(tde.getClass(), "id", "key"));
-			System.err.println(StringUtils.getAnnotationValueForClass(testDao.getClass(), "collectionName"));
+			
+			for(Annotation a : TestDao.class.getAnnotations()){
+				System.err.println(a.annotationType());
+				System.err.println(a.toString());
+			}
+			//System.err.println(AnnotationUtils.getAnnotationValueForFieldofClass(tde.getClass(), "id", "key"));
+			//System.err.println(AnnotationUtils.getAnnotationValueForClass(testDao.getClass(), "collectionName"));
 			//TestDataEnitity tde = tdm.findOneDocumentByKeyValue("x", 100);
 			/*List<TestDataEnitity> l = tdm.getTestData("");
 			System.err.println(l.size());
