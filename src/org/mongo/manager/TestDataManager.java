@@ -5,13 +5,15 @@ import org.mongo.dao.TestDao;
 import java.lang.reflect.Method;
 import java.util.List;
 import com.mongodb.DBObject;
+
+import org.mongo.entity.IBaseEntity;
 import org.mongo.entity.TestDataEnitity;
 import org.bson.types.ObjectId;
 import com.mongodb.BasicDBObject;
 import org.mongo.util.StringUtils;
 
 
-public class TestDataManager implements ITestDataManager{
+public class TestDataManager implements IBaseManager{
  
 	TestDao testDao;	
 	
@@ -56,14 +58,13 @@ public class TestDataManager implements ITestDataManager{
 	}
 	
 	@Override
-	public void addDocumentToCollection(TestDataEnitity tde)throws Exception{
+	public void addDocumentToCollection(IBaseEntity tde)throws Exception{
 		DBObject obj = new BasicDBObject();
-		obj.put("h", tde.getH());
-		obj.put("x", tde.getX());
+		obj.put("h", ((TestDataEnitity)tde).getH());
+		obj.put("x", ((TestDataEnitity)tde).getX());
 		this.testDao.addDBObjectToCollection(obj);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public TestDataEnitity findOneDocumentByKeyValue(String key, Object value){
 		DBObject obj = this.testDao.findOneObjectFromKeyValue("x", 100);

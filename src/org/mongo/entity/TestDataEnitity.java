@@ -3,22 +3,22 @@ package org.mongo.entity;
 import org.bson.types.ObjectId;
 import org.mongo.annotation.CollectionKey;
 
-public class TestDataEnitity {
+public class TestDataEnitity implements IBaseEntity{
 
 	@CollectionKey(key = "_id")
 	ObjectId id;
 	@CollectionKey(key = "x")
-		double x;
+	double x;
 	@CollectionKey(key = "h")
-		String h;
+	String h;
 		
-		public TestDataEnitity(){;}
+	public TestDataEnitity(){;}
 		
-		public TestDataEnitity(ObjectId _id, double _x, String _h){
+	public TestDataEnitity(ObjectId _id, double _x, String _h){
 			id = _id;
 			x = _x;
 			h = _h;
-		}
+	}
 		
 	public ObjectId getId(){
 		return id;
