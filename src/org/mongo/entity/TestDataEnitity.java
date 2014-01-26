@@ -1,11 +1,15 @@
 package org.mongo.entity;
 
 import org.bson.types.ObjectId;
+import org.mongo.annotation.CollectionKey;
 
 public class TestDataEnitity {
 
+	@CollectionKey(key = "_id")
 	ObjectId id;
+	@CollectionKey(key = "x")
 		double x;
+	@CollectionKey(key = "h")
 		String h;
 		
 		public TestDataEnitity(){;}

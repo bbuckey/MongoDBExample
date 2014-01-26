@@ -7,6 +7,7 @@ import org.mongo.entity.*;
 import org.mongo.manager.*;
 import java.util.List;
 import org.mongo.dao.*;
+import org.mongo.util.StringUtils;
 
 public class MongoDBMainTest {
 
@@ -23,11 +24,16 @@ public class MongoDBMainTest {
 		TestDao testDao;
 		TestDataManager tdm;
 		MongoDataSource dba;
+		TestDataEnitity tde;
 		try{
+			
 			dba = new MongoDataSource(new DBAddress(DBAddress.defaultHost() + ":" + String.valueOf(DBAddress.defaultPort()) + "/test"));
 			testDao = new TestDao(dba);
 			tdm = new TestDataManager(testDao);
-			TestDataEnitity tde = tdm.findOneTestDataDocumentByKeyValue("x", 100);
+			tde = new TestDataEnitity();
+			System.err.println(StringUtils.getAnnotationValueForFieldofClass(tde.getClass(), "id", "key"));
+			System.err.println(StringUtils.getAnnotationValueForClass(testDao.getClass(), "collectionName"));
+			//TestDataEnitity tde = tdm.findOneDocumentByKeyValue("x", 100);
 			/*List<TestDataEnitity> l = tdm.getTestData("");
 			System.err.println(l.size());
 			for(TestDataEnitity tde : l){
@@ -35,9 +41,9 @@ public class MongoDBMainTest {
 				System.err.println(tde.getH());
 				System.err.println(tde.getX());
 			}*/
-			System.err.println(tde.getId().toStringMongod());
-			System.err.println(tde.getH());
-			System.err.println(tde.getX());
+			//System.err.println(tde.getId().toStringMongod());
+			//System.err.println(tde.getH());
+			//System.err.println(tde.getX());
 		}
 		catch(Throwable t){
 			t.printStackTrace();

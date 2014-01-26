@@ -15,7 +15,11 @@ import com.mongodb.DBObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.WriteResult;
 import com.mongodb.MongoException;
+import org.mongo.annotation.Collection;
+import org.mongo.annotation.CollectionName;
 
+@Collection
+@CollectionName(collectionName = "testData")
 public class TestDao extends MongoDataBase implements IBaseDao{
 
 	DBCollection dbc;
