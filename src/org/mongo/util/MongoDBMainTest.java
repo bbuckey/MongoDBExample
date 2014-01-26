@@ -37,7 +37,7 @@ public class MongoDBMainTest {
 				System.err.println(a.annotationType());
 				System.err.println(a.toString());
 			}
-			//System.err.println(AnnotationUtils.getAnnotationValueForFieldofClass(tde.getClass(), "id", "key"));
+			System.err.println(AnnotationUtils.getAnnotationValueForFieldofClass(tde.getClass(), "id", "key"));
 			//System.err.println(AnnotationUtils.getAnnotationValueForClass(testDao.getClass(), "collectionName"));
 			//TestDataEnitity tde = tdm.findOneDocumentByKeyValue("x", 100);
 			/*List<TestDataEnitity> l = tdm.getTestData("");

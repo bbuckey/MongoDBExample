@@ -3,9 +3,11 @@ package org.mongo.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
 public interface IBaseDao {
+	public DBCollection getDatabaseCollection();
 	public void removeDBObjectFromCollection(DBObject dbo) throws Exception;
 	public void addDBObjectToCollection(DBObject dbo) throws Exception;
 	public DBObject findOneObjectFromKeyValue(String key, Object value);
