@@ -20,7 +20,7 @@ public class TestDao extends MongoDataBase implements IBaseDao{
 
 	DBCollection dbc;
 
-	TestDao(){;}
+	TestDao(){super();}
 	
 	public TestDao(MongoDataSource mds) {
 		super(mds);
