@@ -24,12 +24,14 @@ public class TestDao extends MongoDataBase implements IBaseDao{
 	
 	public TestDao(MongoDataSource mds) {
 		super(mds);
-		dbc = super.getDBCollection(AnnotationUtils.getAnnotationValueForClass(TestDao.class, "collectionName"));
+		String s = ((org.mongo.annotation.CollectionName)AnnotationUtils.getAnnotationValueForClass(TestDao.class, CollectionName.class)).collectionName();
+		dbc = super.getDBCollection(s);
 	}
 	
 	public DBCollection getDatabaseCollection(){
 		if(dbc == null){
-			dbc = super.getDBCollection(AnnotationUtils.getAnnotationValueForClass(TestDao.class, "collectionName"));
+			String s = ((org.mongo.annotation.CollectionName)AnnotationUtils.getAnnotationValueForClass(TestDao.class, CollectionName.class)).collectionName();
+			dbc = super.getDBCollection(s);
 		}
 		return this.dbc;
 	}

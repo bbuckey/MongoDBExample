@@ -62,5 +62,40 @@ public class AnnotationUtils {
 		return s;
 	}
 	
+	/**
+	 * returns the annotation of clazz if prsent otherwise returns null
+	 * @param clazz
+	 * @param classAnnotation
+	 * @return
+	 */
+	public static Annotation getAnnotationValueForClass(Class clazz, Class classAnnotation) {
+		Annotation a = clazz.getAnnotation(classAnnotation);
+		return a;
+	}
+	
+/**
+ * Takes the Class finds the specified field and returns the annotation orther wise returns null
+ * @param clazz
+ * @param field
+ * @param annotationClass
+ * @return
+ */
+	public static Annotation getAnnotationForFieldofClass(Class clazz,
+			String field, Class annotationClass) {
+		String s = "";
+		Field[] fields = clazz.getDeclaredFields();
+		Annotation annotation;
+		for (Field f : fields) {
+			String theField = f.toString();
+			if (field.equalsIgnoreCase(theField.substring(theField.lastIndexOf(".")+1))) {
+				annotation = f.getAnnotation(annotationClass);
+				if(annotation != null){
+					return annotation;
+				}
+			}
+		}
+		return null;
+	}
+	
 	
 }

@@ -2,6 +2,7 @@ package org.mongo.manager;
 
 import org.mongo.dao.TestDao;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -67,7 +68,8 @@ public class TestDataManager extends BaseManager{
 		for (Field f : tde.getClazz().getDeclaredFields()){
 			String fieldName = f.toString();
 			fieldName = fieldName.substring(fieldName.lastIndexOf(".")+1);
-			String dbFieldName = AnnotationUtils.getAnnotationValueForFieldofClass(tde.getClazz(),fieldName, "key");
+			org.mongo.annotation.CollectionKey a = (org.mongo.annotation.CollectionKey)AnnotationUtils.getAnnotationForFieldofClass(tde.getClass(), fieldName, org.mongo.annotation.CollectionKey.class);
+			String dbFieldName = a.key();
 			if(dbFieldName != null && !dbFieldName.isEmpty() && !"_id".equalsIgnoreCase(dbFieldName)){
 				fieldName = "get"+StringUtils.makeFirstLetterUpperCase(fieldName);
 				map.put(dbFieldName, tde.getClazz().getMethod(fieldName).invoke(tde));
