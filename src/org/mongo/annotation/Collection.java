@@ -10,5 +10,8 @@ import java.lang.annotation.Documented;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Collection {
+	/**
+	 * this is used at the class level of the collection dao 
+	 */
 
 }
