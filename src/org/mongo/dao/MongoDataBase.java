@@ -77,4 +77,8 @@ public abstract class MongoDataBase {
 				dbname, collectionName);
 	}
 
+	public void closeDB(){
+		this.mongoDataSource.closeDB();
+	}
+	
 }

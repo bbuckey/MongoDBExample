@@ -14,11 +14,11 @@ import javax.net.SocketFactory;
 
 public final class MongoDataSource {
 
-	Mongo mongo;
-	ServerAddress dbAddress;
-	DBConnector dbConnector;
-	DB db;
-	String dbName;
+	private Mongo mongo;
+	private ServerAddress dbAddress;
+	private DBConnector dbConnector;
+	private DB db;
+	private String dbName;
 
 	MongoDataSource() {
 		;
@@ -117,6 +117,12 @@ public final class MongoDataSource {
 			String dataBase, org.mongo.atomic.CollectionNames collectionName) {
 		return this.mongo.getDB(dataBase).getCollectionFromString(
 				collectionName.getCamelCase());
+	}
+	
+	public void closeDB()
+	{
+		this.db.requestDone();
+		this.mongo.close();
 	}
 
 }
