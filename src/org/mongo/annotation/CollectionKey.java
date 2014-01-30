@@ -11,8 +11,9 @@ import java.lang.annotation.Documented;
 @Target(ElementType.FIELD)
 public @interface CollectionKey {
 	/**
-	 * this is used to identify a key value in a collection and
-	 * can be found on the field in the model class
+	 * this is used to identify a key value in a collection and can be found on
+	 * the field in the model class
+	 * 
 	 * @return
 	 */
 	String key() default "";

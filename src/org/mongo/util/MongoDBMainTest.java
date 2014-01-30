@@ -8,7 +8,9 @@ import org.mongo.manager.*;
 import java.util.List;
 import org.mongo.dao.*;
 import java.lang.annotation.Annotation;
-import org.mongo.util.AnnotationUtils;;
+import org.mongo.util.AnnotationUtils;
+
+;
 
 public class MongoDBMainTest {
 
@@ -20,41 +22,43 @@ public class MongoDBMainTest {
 		Properties props = new Properties();
 		props.setProperty("host", "127.0.0.1");
 		props.setProperty("port", String.valueOf(DBAddress.defaultPort()));
-		props.setProperty("connectionPerHost", String.valueOf(1)); 
+		props.setProperty("connectionPerHost", String.valueOf(1));
 		props.setProperty("connectTimeout", String.valueOf(100000));
 		TestDao testDao;
 		TestDataManager tdm;
 		MongoDataSource dba;
 		TestDataEnitity tde;
-		try{
-			
-			dba = new MongoDataSource(new DBAddress(DBAddress.defaultHost() + ":" + String.valueOf(DBAddress.defaultPort()) + "/test"));
-			testDao = new TestDao(dba);
-			tdm = new TestDataManager(testDao);
-			tde = new TestDataEnitity();
-			
-			for(Annotation a : TestDao.class.getAnnotations()){
+		try {
+			 dba = new MongoDataSource(new DBAddress(DBAddress.defaultHost() +
+			 ":" + String.valueOf(DBAddress.defaultPort()) + "/test"));
+			 testDao = new TestDao(dba);
+			 tdm = new TestDataManager(testDao);
+			List<Annotation> l = AnnotationUtils
+					.getListOfClassLevelAnnotationFromClass(TestDataEnitity.class);
+			for (Annotation a : l) {
 				System.err.println(a.annotationType());
 				System.err.println(a.toString());
 			}
-			System.err.println(AnnotationUtils.getAnnotationValueForFieldofClass(tde.getClass(), "id", "key"));
-			//System.err.println(AnnotationUtils.getAnnotationValueForClass(testDao.getClass(), "collectionName"));
-			//TestDataEnitity tde = tdm.findOneDocumentByKeyValue("x", 100);
-			/*List<TestDataEnitity> l = tdm.getTestData("");
-			System.err.println(l.size());
-			for(TestDataEnitity tde : l){
-				System.err.println(tde.getId().toStringMongod());
-				System.err.println(tde.getH());
-				System.err.println(tde.getX());
-			}*/
-			//System.err.println(tde.getId().toStringMongod());
-			//System.err.println(tde.getH());
-			//System.err.println(tde.getX());
-		}
-		catch(Throwable t){
+			// System.err.println(AnnotationUtils.getAnnotationValueForFieldofClass(tde.getClass(),
+			// "id", "key"));
+			// System.err.println(AnnotationUtils.getAnnotationValueForClass(TestDao.class,
+			// "collectionName"));
+			 tde = tdm.findOneDocumentByKeyValue("x", 100);
+			
+			 // List<TestDataEnitity> l = tdm.getTestData("");
+			  //System.err.println(l.size()); for(TestDataEnitity tde : l){
+			  System.err.println(tde.getId().toStringMongod());
+			  System.err.println(tde.getH()); 
+			  System.err.println(tde.getX());
+			  //; }
+			 
+			// System.err.println(tde.getId().toStringMongod());
+			// System.err.println(tde.getH());
+			// System.err.println(tde.getX());
+		} catch (Throwable t) {
 			t.printStackTrace();
 		}
-		
+
 	}
 
 }

@@ -19,50 +19,57 @@ public final class MongoDataSource {
 	DBConnector dbConnector;
 	DB db;
 	String dbName;
-	
-	MongoDataSource() {;}
 
-	public MongoDataSource(MongoOptions mo, ServerAddress sa, String _dbName) throws UnknownHostException {
+	MongoDataSource() {
+		;
+	}
+
+	public MongoDataSource(MongoOptions mo, ServerAddress sa, String _dbName)
+			throws UnknownHostException {
 		dbName = _dbName;
-		mongo =  new Mongo(sa,mo);
-		dbAddress = new DBAddress(sa.getHost(),sa.getPort(),dbName);
+		mongo = new Mongo(sa, mo);
+		dbAddress = new DBAddress(sa.getHost(), sa.getPort(), dbName);
 		db = mongo.getDB(dbName);
 		dbConnector = mongo.getConnector();
 	}
-	
-	public MongoDataSource(Mongo _mongo, ServerAddress sa, DB _db, String _dbName) throws UnknownHostException {
+
+	public MongoDataSource(Mongo _mongo, ServerAddress sa, DB _db,
+			String _dbName) throws UnknownHostException {
 		dbName = _dbName;
 		mongo = _mongo;
-		dbAddress = new DBAddress(sa.getHost(),sa.getPort(),dbName);
+		dbAddress = new DBAddress(sa.getHost(), sa.getPort(), dbName);
 		db = _db;
 		dbConnector = mongo.getConnector();
 	}
-	
-	
-	public MongoDataSource(Mongo _mongo, String _dbName) throws UnknownHostException {
+
+	public MongoDataSource(Mongo _mongo, String _dbName)
+			throws UnknownHostException {
 		dbName = _dbName;
 		mongo = _mongo;
-		dbAddress = new DBAddress(_mongo.getAddress().getHost(),_mongo.getAddress().getPort(),dbName);
+		dbAddress = new DBAddress(_mongo.getAddress().getHost(), _mongo
+				.getAddress().getPort(), dbName);
 		db = mongo.getDB(dbName);
 		dbConnector = mongo.getConnector();
 	}
-	
-	public MongoDataSource(ServerAddress _dbAddress,String _dbName) throws UnknownHostException {
+
+	public MongoDataSource(ServerAddress _dbAddress, String _dbName)
+			throws UnknownHostException {
 		dbName = _dbName;
-		dbAddress = new DBAddress(_dbAddress.getHost(),_dbAddress.getPort(),dbName);
-		db = Mongo.connect((DBAddress)dbAddress);
+		dbAddress = new DBAddress(_dbAddress.getHost(), _dbAddress.getPort(),
+				dbName);
+		db = Mongo.connect((DBAddress) dbAddress);
 		mongo = db.getMongo();
 		dbConnector = mongo.getConnector();
 	}
-	
+
 	public MongoDataSource(DBAddress _dbAddress) throws UnknownHostException {
 		dbAddress = _dbAddress;
-		db = Mongo.connect((DBAddress)dbAddress);
+		db = Mongo.connect((DBAddress) dbAddress);
 		mongo = db.getMongo();
 		dbConnector = mongo.getConnector();
 		dbName = db.getName();
 	}
-	
+
 	public MongoDataSource(DB _db) throws UnknownHostException {
 		db = _db;
 		dbAddress = db.getMongo().getAddress();
@@ -70,15 +77,15 @@ public final class MongoDataSource {
 		dbConnector = mongo.getConnector();
 		dbName = db.getName();
 	}
-	
+
 	public DBConnector getDBConnecter() {
 		return this.dbConnector;
 	}
 
 	public DBAddress getDBAddress() {
-		return (DBAddress)this.dbAddress;
+		return (DBAddress) this.dbAddress;
 	}
-	
+
 	public ServerAddress getServerAddress() {
 		return this.dbAddress;
 	}
@@ -87,10 +94,10 @@ public final class MongoDataSource {
 		return this.db;
 	}
 
-	public String getDBName(){
+	public String getDBName() {
 		return this.dbName;
 	}
-	
+
 	public boolean ConnectToTheDBWithUser(String username, char[] passwd) {
 		boolean isAuth = db.authenticate(username, passwd);
 		return isAuth;

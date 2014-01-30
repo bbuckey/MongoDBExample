@@ -11,8 +11,9 @@ import java.lang.annotation.Documented;
 @Target(ElementType.TYPE)
 public @interface CollectionName {
 	/**
-	 * This is used in class declaration to identify a collection name this is used with 
-	 * the collection annotation
+	 * This is used in class declaration to identify a collection name this is
+	 * used with the collection annotation
+	 * 
 	 * @return
 	 */
 	String collectionName() default "";

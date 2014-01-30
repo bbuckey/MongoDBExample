@@ -16,33 +16,39 @@ import org.mongo.util.AnnotationUtils;
 
 @Collection
 @CollectionName(collectionName = "testData")
-public class TestDao extends MongoDataBase implements IBaseDao{
+public class TestDao extends MongoDataBase implements IBaseDao {
 
 	DBCollection dbc;
 
-	TestDao(){super();}
-	
+	TestDao() {
+		super();
+	}
+
 	public TestDao(MongoDataSource mds) {
 		super(mds);
-		String s = ((org.mongo.annotation.CollectionName)AnnotationUtils.getAnnotationValueForClass(TestDao.class, CollectionName.class)).collectionName();
+		String s = ((org.mongo.annotation.CollectionName) AnnotationUtils
+				.getAnnotationValueForClass(this.getClass(),
+						CollectionName.class)).collectionName();
 		dbc = super.getDBCollection(s);
 	}
-	
-	public DBCollection getDatabaseCollection(){
-		if(dbc == null){
-			String s = ((org.mongo.annotation.CollectionName)AnnotationUtils.getAnnotationValueForClass(TestDao.class, CollectionName.class)).collectionName();
+
+	public DBCollection getDatabaseCollection() {
+		if (dbc == null) {
+			String s = ((org.mongo.annotation.CollectionName) AnnotationUtils
+					.getAnnotationValueForClass(this.getClass(),
+							CollectionName.class)).collectionName();
 			dbc = super.getDBCollection(s);
 		}
 		return this.dbc;
 	}
-	
+
 	@Override
-	public DBObject findOneObjectFromKeyValue(String key, Object value){
+	public DBObject findOneObject(String key, Object value) {
 		DBObject dbo = new BasicDBObject();
 		dbo.put(key, value);
 		return this.dbc.findOne(dbo);
 	}
-	
+
 	@Override
 	public void addDBObjectToCollection(DBObject dbo) throws Exception {
 		WriteResult wr = this.dbc.save(dbo);
@@ -62,7 +68,8 @@ public class TestDao extends MongoDataBase implements IBaseDao{
 		if (dbo != null && dbo.containsField(key) && dbo.get(key).equals(value)) {
 			removeDBObjectFromCollection(dbo);
 		} else {
-			throw new MongoException("Error while removing a document: The document was not found");
+			throw new MongoException(
+					"Error while removing a document: The document was not found");
 		}
 
 	}
@@ -77,37 +84,69 @@ public class TestDao extends MongoDataBase implements IBaseDao{
 	}
 
 	@Override
-	public DBObject findOneObjectFromDBObject(DBObject obj) {
+	public DBObject findOneObject(DBObject obj) {
 		return this.dbc.findOne(obj);
 	}
 
 	@Override
-	public List<DBObject> findObjectsFromKeyValueMap(Map m) {
+	public List<DBObject> findObjects(Map m) {
 		DBObject dbo = new BasicDBObject();
 		dbo.putAll(m);
 		DBCursor cursor = this.dbc.find(dbo);
-		return cursor!= null ? cursor.toArray() : null;
+		return cursor != null ? cursor.toArray() : null;
 	}
 
 	@Override
-	public List<DBObject> findObjectsFromDBOjects(DBObject obj) {
+	public List<DBObject> findObjects(DBObject obj) {
 		DBCursor cursor = this.dbc.find(obj);
-		return cursor!= null ? cursor.toArray() : null;
+		return cursor != null ? cursor.toArray() : null;
 	}
 
 	@Override
 	public List<DBObject> getCollectionAsList() {
 		DBCursor cursor = dbc.find();
-		return cursor!= null ? cursor.toArray() : null;
+		return cursor != null ? cursor.toArray() : null;
 	}
 
 	@Override
 	public void updateDocumentWithDBObject(DBObject query, DBObject updateObject) {
 		WriteResult wr = dbc.update(query, updateObject);
-				if (wr.getError() != null && !wr.getError().equals("")) {
-					throw new MongoException("Error while updating a document"
-							+ wr.getError());
-				}
+		if (wr.getError() != null && !wr.getError().equals("")) {
+			throw new MongoException("Error while updating a document"
+					+ wr.getError());
+		}
+	}
+
+	@Override
+	public void removeDBObjectFromCollection(Map map) throws Exception {
+		DBObject dbo = new BasicDBObject();
+		dbo.putAll(map);
+		WriteResult wr = this.dbc.remove(dbo);
+		if (wr.getError() != null && !wr.getError().equals("")) {
+			throw new MongoException("Error while removing a document"
+					+ wr.getError());
+		}
+	}
+
+	@Override
+	public void addDBObjectToCollection(Map map) throws Exception {
+		DBObject dbo = new BasicDBObject();
+		dbo.putAll(map);
+		WriteResult wr = this.dbc.save(dbo);
+		// this.dbc.insert(dbo);
+		if (wr.getError() != null && !wr.getError().equals("")) {
+			throw new MongoException("Error while inserting a document"
+					+ wr.getError());
+		}
+		this.dbc.save(dbo);
+
+	}
+
+	@Override
+	public DBObject findOneObject(Map map) {
+		DBObject dbo = new BasicDBObject();
+		dbo.putAll(map);
+		return this.dbc.findOne(dbo);
 	}
 
 }

@@ -1,10 +1,19 @@
 package org.mongo.atomic;
 
 public enum CollectionNames {
-	//TESTDATA();
+	// TESTDATA();
 	TESTDATA("testData");
-	CollectionNames(){;}
+	CollectionNames() {
+		;
+	}
+
 	String camelCase;
-	CollectionNames(String _camelCase){camelCase = _camelCase;}
-	public String getCamelCase(){return camelCase;}
+
+	CollectionNames(String _camelCase) {
+		camelCase = _camelCase;
+	}
+
+	public String getCamelCase() {
+		return camelCase;
+	}
 }
